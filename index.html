@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07090F">
+<meta name="description" content="Three passages from a machine-narrated Pride and Prejudice, produced by Antiphon.">
+</head>
+<body>
+<title>The Burning Index</title>
+<style>
+  /* ── The Burning Index ────────────────────────────────────────────
+     Alexandria as a star catalogue, read by a dark instrument.
+     Deliberately single-theme: this is a lit panel in a dark room, and
+     a light variant would be a different object. Every colour is painted
+     explicitly so the page holds on any host background.
+     ---------------------------------------------------------------- */
+  :root {
+    --void:      #07090F;
+    --panel:     #0B1019;
+    --lapis:     #16233D;
+    --meridian:  #1E2636;
+    --gold:      #D9B87C;
+    --gold-dim:  #7E6740;
+    --ivory:     #EDE7DA;
+    --steel:     #8E939E;
+    --dim:       #7A8190;
+    --sealed:    #2A3141;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { background: var(--void); }
+  body {
+    margin: 0;
+    padding: 0 0 5rem;
+    background: var(--void);
+    color: var(--ivory);
+    font-family: Baskerville, "Palatino", "Iowan Old Style", Georgia, serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  #sky {
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none; opacity: .5;
+  }
+  main {
+    position: relative; z-index: 1;
+    max-width: 40rem; margin: 0 auto; padding: 0 1.15rem;
+  }
+
+  .inscribe {
+    font-family: Copperplate, "Copperplate Gothic Light", Optima, "Gill Sans", sans-serif;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+  .mono {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .eyebrow {
+    font-size: .6rem; letter-spacing: .3em; color: var(--gold-dim);
+  }
+
+  /* ── Header ─────────────────────────────────────────── */
+  header { padding: 3.5rem 0 2.25rem; text-align: center; }
+  .sigil {
+    width: 26px; height: 26px; margin: 0 auto .9rem;
+    border: 1px solid var(--gold-dim); transform: rotate(45deg);
+    position: relative;
+  }
+  .sigil::after {
+    content: ""; position: absolute; inset: 6px;
+    background: var(--gold); opacity: .85;
+  }
+  h1 {
+    font-size: clamp(1.35rem, 5.4vw, 2.05rem);
+    font-weight: 400; line-height: 1.25; margin: .8rem 0 .5rem;
+    color: var(--gold); text-wrap: balance;
+  }
+  .byline { font-style: italic; color: var(--steel); margin: 0 0 1.4rem; font-size: .95rem; }
+  .meridian-rule {
+    height: 1px; background: linear-gradient(90deg,
+      transparent, var(--meridian) 15%, var(--gold-dim) 50%, var(--meridian) 85%, transparent);
+    margin: 0 0 1.4rem;
+  }
+  .standfirst {
+    font-size: .92rem; color: var(--steel); margin: 0 auto; max-width: 30rem;
+  }
+  .standfirst b { color: var(--ivory); font-weight: 400; }
+
+  /* ── Instrument ─────────────────────────────────────── */
+  .instrument {
+    background: var(--panel);
+    border: 1px solid var(--meridian);
+    padding: 1.1rem 1.15rem 1rem;
+    margin: 2.25rem 0 2.75rem;
+  }
+  .readout { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .readout .now { font-size: .95rem; color: var(--ivory); min-width: 0; }
+  .readout .idx { font-size: .6rem; color: var(--gold-dim); }
+  .arcwrap { margin: .35rem 0 .1rem; touch-action: none; }
+  .arcwrap svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .arc-bed  { fill: none; stroke: var(--meridian); stroke-width: 1.25; }
+  .arc-live { fill: none; stroke: var(--gold); stroke-width: 1.25; }
+  .arc-head { fill: var(--gold); }
+  .arc-halo { fill: var(--gold); opacity: .18; }
+  .arcwrap:focus-visible { outline: 1px solid var(--gold); outline-offset: 4px; }
+
+  .transport { display: flex; align-items: center; gap: .9rem; margin-top: .35rem; }
+  .key {
+    /* 44px: the minimum comfortable tap target on a phone. */
+    width: 2.75rem; height: 2.75rem; flex: none; cursor: pointer;
+    background: transparent; border: 1px solid var(--gold-dim);
+    color: var(--gold); display: grid; place-items: center; padding: 0;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .key:hover { background: var(--lapis); border-color: var(--gold); }
+  .key:focus-visible { outline: 1px solid var(--gold); outline-offset: 3px; }
+  .key svg { width: .8rem; height: .8rem; fill: currentColor; display: block; }
+  .tc { font-size: .68rem; color: var(--steel); letter-spacing: .06em; }
+  .tc b { color: var(--gold); font-weight: 400; }
+
+  /* ── Sections ───────────────────────────────────────── */
+  section { margin-bottom: 2.75rem; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: .7rem;
+    border-bottom: 1px solid var(--meridian); padding-bottom: .45rem; margin-bottom: .3rem;
+  }
+  .sec-head h2 { font-size: .68rem; font-weight: 400; color: var(--gold); margin: 0; }
+  .sec-head .count { font-size: .6rem; color: var(--dim); margin-left: auto; }
+
+  /* ── Passages ───────────────────────────────────────── */
+  .passages { list-style: none; margin: 0; padding: 0; }
+  .passages li { border-bottom: 1px solid var(--meridian); }
+  .passage {
+    width: 100%; background: none; border: 0; cursor: pointer; color: inherit;
+    font: inherit; text-align: left; padding: .95rem .2rem;
+    display: grid; grid-template-columns: 2.1rem 1fr auto; gap: .3rem .75rem;
+    align-items: baseline; transition: background .15s ease;
+  }
+  .passage:hover { background: var(--panel); }
+  .passage:focus-visible { outline: 1px solid var(--gold); outline-offset: -1px; }
+  .passage .n { font-size: .62rem; color: var(--dim); }
+  .passage .t { font-size: 1rem; color: var(--ivory); }
+  .passage .d { font-size: .66rem; color: var(--dim); }
+  .passage .sub {
+    grid-column: 2 / -1; font-size: .62rem; color: var(--dim);
+    letter-spacing: .16em; margin-top: .1rem;
+  }
+  .passage[aria-current="true"] .t,
+  .passage[aria-current="true"] .n { color: var(--gold); }
+  .passage[aria-current="true"] .sub { color: var(--gold-dim); }
+  .passage[aria-current="true"] { background: var(--panel); }
+
+  /* ── Catalogue of voices ────────────────────────────── */
+  .plot { margin: 1.2rem 0 .4rem; }
+  .plot svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .body-dot { fill: var(--sealed); transition: fill .45s ease, r .45s ease; }
+  .body-dot.lit { fill: var(--gold); }
+  .body-ring { fill: none; stroke: var(--gold); stroke-width: .6; opacity: 0; transition: opacity .3s ease; }
+  .body-ring.lit { opacity: .5; }
+  .plot-arc { fill: none; stroke: var(--meridian); stroke-width: .75; }
+
+  .catalogue { list-style: none; margin: 0; padding: 0; }
+  .catalogue li {
+    display: grid; grid-template-columns: .8rem 1fr auto;
+    gap: .7rem; align-items: baseline;
+    padding: .6rem 0; border-bottom: 1px solid var(--meridian);
+    transition: opacity .4s ease;
+  }
+  .catalogue li.sealed { opacity: .32; }
+  .cat-dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--sealed); align-self: center; }
+  .catalogue li.open .cat-dot { background: var(--gold); }
+  .cat-name { font-size: .97rem; color: var(--ivory); }
+  .catalogue li.sealed .cat-name { color: var(--steel); }
+  .cat-voice { font-size: .62rem; color: var(--gold-dim); display: block; margin-top: .1rem; letter-spacing: .04em; }
+  .cat-mag { font-size: .62rem; color: var(--dim); text-align: right; white-space: nowrap; }
+  .cat-state {
+    font-size: .55rem; letter-spacing: .18em; display: block; margin-top: .15rem;
+  }
+  .catalogue li.open .cat-state { color: var(--gold-dim); }
+  .catalogue li.sealed .cat-state { color: var(--sealed); }
+
+  /* ── Provenance ─────────────────────────────────────── */
+  .prov { font-size: .84rem; color: var(--steel); }
+  .prov p { margin: 0 0 .75rem; }
+  .prov h3 { font-size: .62rem; color: var(--gold); margin: 1.5rem 0 .5rem; font-weight: 400; }
+  .prov h3:first-child { margin-top: 0; }
+  .prov dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: .35rem .9rem; font-size: .8rem; }
+  .prov dt { color: var(--dim); }
+  .prov dd { margin: 0; color: var(--steel); }
+  blockquote {
+    margin: .6rem 0 .9rem; padding-left: .85rem;
+    border-left: 1px solid var(--gold-dim); color: var(--ivory); font-style: italic;
+  }
+  blockquote span { display: block; font-style: normal; font-size: .76rem; color: var(--dim); margin-top: .3rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<main>
+  <header>
+    <div class="sigil" aria-hidden="true"></div>
+    <div class="eyebrow inscribe">Antiphon · Index of Voices</div>
+    <h1 class="inscribe">Pride and Prejudice</h1>
+    <p class="byline">Jane Austen</p>
+    <div class="meridian-rule"></div>
+    <p class="standfirst">
+      Three passages drawn from a <b>twelve hour</b> machine-narrated edition.
+      Every speaker was found in the text and assigned a voice with no human hand.
+    </p>
+  </header>
+
+  <div class="instrument">
+    <div class="readout">
+      <span class="now" id="nowTitle">Chapter I</span>
+      <span class="idx inscribe mono" id="nowIdx">I / III</span>
+    </div>
+    <div class="arcwrap" id="arcwrap" role="slider" tabindex="0"
+         aria-label="Seek within passage" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <svg viewBox="0 0 400 74" preserveAspectRatio="none" aria-hidden="true">
+        <path id="arcBed"  class="arc-bed"  d="M 6 64 Q 200 6 394 64"></path>
+        <path id="arcLive" class="arc-live" d="M 6 64 Q 200 6 394 64"></path>
+        <circle id="arcHalo" class="arc-halo" r="7" cx="6" cy="64"></circle>
+        <circle id="arcHead" class="arc-head" r="2.6" cx="6" cy="64"></circle>
+      </svg>
+    </div>
+    <div class="transport">
+      <button class="key" id="key" aria-label="Play">
+        <svg id="keyIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <div class="tc mono"><b id="tcCur">0:00</b> <span id="tcDur">/ 4:32</span></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="inscribe">Passages</h2>
+      <span class="count inscribe mono" id="pCount"></span>
+    </div>
+    <ul class="passages" id="passages"></ul>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="inscribe">Catalogue of Voices</h2>
+      <span class="count inscribe mono" id="vCount"></span>
+    </div>
+    <div class="plot" id="plot"></div>
+    <ul class="catalogue" id="catalogue"></ul>
+  </section>
+
+  <section class="prov">
+    <div class="sec-head"><h2 class="inscribe">Provenance</h2></div>
+    <h3 class="inscribe">What this is</h3>
+    <p>
+      No voice here was recorded. The text was parsed, its chapters found, its
+      speakers attributed line by line, and each character given one of
+      twenty-eight neural voices running on a single machine. The complete
+      edition runs to sixty-three chapters.
+    </p>
+    <h3 class="inscribe">Known faults</h3>
+    <p>Two lines in the third passage are wrongly cast. They are left in.</p>
+    <blockquote>
+      “Lizzy, remember where you are, and do not run on in the wild manner…”
+      <span>Heard in Mr. Bingley’s voice. It is Mrs. Bennet — the text tags it “cried her mother.”</span>
+    </blockquote>
+    <p>
+      Across eight audited chapters sixty-three per cent of dialogue reaches a
+      character. The rest falls to the narrator by design: where the evidence
+      runs out, the line is not guessed.
+    </p>
+    <h3 class="inscribe">Record</h3>
+    <dl>
+      <dt>Source</dt><dd>Project Gutenberg 1342 · public domain</dd>
+      <dt>Voices</dt><dd>Kokoro-82M · Apache-2.0 · rendered locally</dd>
+      <dt>Cast</dt><dd>12 characters and a narrator</dd>
+      <dt>Extent</dt><dd class="mono">12:27:00 · 3,486 segments</dd>
+    </dl>
+  </section>
+</main>
+
+<audio id="audio" preload="metadata"></audio>
+
+<script>
+'use strict';
+const SRC = { A: "audio/ch1-2.mp3", B: "audio/ch9.mp3" };
+const TRACKS = [{"title": "Chapter I", "src": "A", "start": 0.0, "end": 272.55, "cast": [{"name": "Mrs. Bennet", "voice": "bf_emma", "note": "measured, refined (GB)", "lines": 18}, {"name": "Mr. Bennet", "voice": "am_puck", "note": "quick, wry (US)", "lines": 14}]}, {"title": "Chapter II", "src": "A", "start": 272.55, "end": 544.16, "cast": [{"name": "Narrator", "voice": "am_michael", "note": "steady, grounded (US)", "lines": 14}, {"name": "Mr. Bennet", "voice": "am_puck", "note": "quick, wry (US)", "lines": 10}, {"name": "Mrs. Bennet", "voice": "bf_emma", "note": "measured, refined (GB)", "lines": 5}, {"name": "Elizabeth", "voice": "af_heart", "note": "warm, expressive (US)", "lines": 2}, {"name": "Lydia", "voice": "af_nicole", "note": "soft, breathy (US)", "lines": 2}]}, {"title": "Chapter IX — the Netherfield morning call", "src": "B", "start": 0.0, "end": 163.01, "cast": [{"name": "Mr. Bingley", "voice": "am_eric", "note": "even, plainspoken (US)", "lines": 10}, {"name": "Mrs. Bennet", "voice": "bf_emma", "note": "measured, refined (GB)", "lines": 4}, {"name": "Elizabeth", "voice": "af_heart", "note": "warm, expressive (US)", "lines": 4}, {"name": "Narrator", "voice": "am_michael", "note": "steady, grounded (US)", "lines": 3}, {"name": "Miss Bingley", "voice": "bf_alice", "note": "crisp, precise (GB)", "lines": 2}, {"name": "Mr. Darcy", "voice": "bm_george", "note": "authoritative, warm (GB)", "lines": 2}]}];
+const ROMAN = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+
+/* ── Starfield: deterministic, drawn once, purely atmospheric ── */
+(function sky() {
+  const c = document.getElementById('sky');
+  if (!c || !c.getContext) return;
+  const ctx = c.getContext('2d');
+  let seed = 20260814;
+  const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
+  function draw() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = c.clientWidth, h = c.clientHeight;
+    c.width = w * dpr; c.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    seed = 20260814;
+    const n = Math.round((w * h) / 14000);
+    for (let i = 0; i < n; i++) {
+      const x = rnd() * w, y = rnd() * h, r = rnd() * 0.9 + 0.25, a = rnd() * 0.5 + 0.08;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(217,184,124,' + a.toFixed(3) + ')';
+      ctx.fill();
+    }
+  }
+  draw();
+  let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(draw, 200); });
+})();
+
+const audio  = document.getElementById('audio');
+const key    = document.getElementById('key');
+const keyIcon= document.getElementById('keyIcon').firstElementChild;
+const arcwrap= document.getElementById('arcwrap');
+const arcLive= document.getElementById('arcLive');
+const arcBed = document.getElementById('arcBed');
+const arcHead= document.getElementById('arcHead');
+const arcHalo= document.getElementById('arcHalo');
+const tcCur  = document.getElementById('tcCur');
+const tcDur  = document.getElementById('tcDur');
+const nowTitle = document.getElementById('nowTitle');
+const nowIdx = document.getElementById('nowIdx');
+
+const PLAY='M8 5v14l11-7z', PAUSE='M6 5h4v14H6zM14 5h4v14h-4z';
+let idx = 0, loaded = null;
+const ARC_LEN = arcBed.getTotalLength();
+arcLive.style.strokeDasharray = ARC_LEN;
+arcLive.style.strokeDashoffset = ARC_LEN;
+
+const fmt = (s) => {
+  if (!isFinite(s) || s < 0) s = 0;
+  return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+};
+
+/* ── Passages ── */
+const pl = document.getElementById('passages');
+TRACKS.forEach((t, i) => {
+  const li = document.createElement('li');
+  const b = document.createElement('button');
+  b.className = 'passage'; b.type = 'button';
+  b.innerHTML = '<span class="n inscribe mono"></span><span class="t"></span>'
+              + '<span class="d mono"></span><span class="sub inscribe"></span>';
+  b.querySelector('.n').textContent = ROMAN[i] || (i + 1);
+  b.querySelector('.t').textContent = t.title;
+  b.querySelector('.d').textContent = fmt(t.end - t.start);
+  b.querySelector('.sub').textContent = t.cast.length + ' voices';
+  b.addEventListener('click', () => select(i, true));
+  li.appendChild(b); pl.appendChild(li);
+});
+const pButtons = Array.from(pl.querySelectorAll('.passage'));
+document.getElementById('pCount').textContent = TRACKS.length + ' of LXIII';
+
+/* ── Catalogue: union of every voice heard, plotted as bodies ── */
+const totals = new Map();
+TRACKS.forEach(t => t.cast.forEach(c => {
+  const e = totals.get(c.name) || { name: c.name, voice: c.voice, note: c.note, lines: 0, in: new Set() };
+  e.lines += c.lines; e.in.add(t.title); totals.set(c.name, e);
+}));
+const BODIES = Array.from(totals.values()).sort((a, b) => b.lines - a.lines);
+const maxLines = Math.max.apply(null, BODIES.map(b => b.lines));
+document.getElementById('vCount').textContent = BODIES.length + ' bodies';
+
+const NS = 'http://www.w3.org/2000/svg';
+const plot = document.getElementById('plot');
+const psvg = document.createElementNS(NS, 'svg');
+psvg.setAttribute('viewBox', '0 0 400 96');
+psvg.setAttribute('aria-hidden', 'true');
+const guide = document.createElementNS(NS, 'path');
+guide.setAttribute('class', 'plot-arc');
+guide.setAttribute('d', 'M 12 82 Q 200 4 388 82');
+psvg.appendChild(guide);
+const dots = new Map();
+BODIES.forEach((b, i) => {
+  const f = BODIES.length === 1 ? .5 : i / (BODIES.length - 1);
+  const p = guide.getPointAtLength(guide.getTotalLength() * f);
+  const r = 2.4 + (b.lines / maxLines) * 5.2;
+  const ring = document.createElementNS(NS, 'circle');
+  ring.setAttribute('class', 'body-ring');
+  ring.setAttribute('cx', p.x); ring.setAttribute('cy', p.y); ring.setAttribute('r', r + 4);
+  const d = document.createElementNS(NS, 'circle');
+  d.setAttribute('class', 'body-dot');
+  d.setAttribute('cx', p.x); d.setAttribute('cy', p.y); d.setAttribute('r', r);
+  psvg.appendChild(ring); psvg.appendChild(d);
+  dots.set(b.name, { dot: d, ring: ring });
+});
+plot.appendChild(psvg);
+
+const cat = document.getElementById('catalogue');
+BODIES.forEach(b => {
+  const li = document.createElement('li');
+  li.dataset.name = b.name;
+  const dot = document.createElement('span'); dot.className = 'cat-dot';
+  const mid = document.createElement('div');
+  const nm = document.createElement('span'); nm.className = 'cat-name'; nm.textContent = b.name;
+  const vc = document.createElement('span'); vc.className = 'cat-voice mono';
+  vc.textContent = b.voice + (b.note ? ' · ' + b.note : '');
+  mid.append(nm, vc);
+  const rt = document.createElement('div'); rt.className = 'cat-mag mono';
+  rt.textContent = b.lines + ' lines';
+  const st = document.createElement('span'); st.className = 'cat-state inscribe';
+  rt.appendChild(st);
+  li.append(dot, mid, rt);
+  li.addEventListener('mouseenter', () => dots.get(b.name).ring.classList.add('lit'));
+  li.addEventListener('mouseleave', () => dots.get(b.name).ring.classList.remove('lit'));
+  cat.appendChild(li);
+});
+
+/* ── Focus the instrument on one passage ── */
+function illuminate(t) {
+  const present = new Set(t.cast.map(c => c.name));
+  cat.querySelectorAll('li').forEach(li => {
+    const on = present.has(li.dataset.name);
+    li.classList.toggle('open', on);
+    li.classList.toggle('sealed', !on);
+    li.querySelector('.cat-state').textContent = on ? 'Open' : 'Sealed';
+    const d = dots.get(li.dataset.name);
+    if (d) d.dot.classList.toggle('lit', on);
+  });
+}
+
+/* ── Transport ── */
+function select(i, play) {
+  idx = i;
+  const t = TRACKS[i];
+  pButtons.forEach((b, n) => b.setAttribute('aria-current', String(n === i)));
+  nowTitle.textContent = t.title;
+  nowIdx.textContent = (ROMAN[i] || i + 1) + ' / ' + (ROMAN[TRACKS.length - 1] || TRACKS.length);
+  tcDur.textContent = '/ ' + fmt(t.end - t.start);
+  illuminate(t);
+  const go = () => {
+    try { audio.currentTime = t.start; } catch (e) {}
+    if (play) audio.play().catch(() => {});
+  };
+  if (loaded !== t.src) {
+    loaded = t.src;
+    audio.src = SRC[t.src];
+    audio.addEventListener('loadedmetadata', go, { once: true });
+    audio.load();
+  } else { go(); }
+}
+
+key.addEventListener('click', () => {
+  if (!audio.src) return select(idx, true);
+  if (audio.paused) audio.play().catch(() => {}); else audio.pause();
+});
+audio.addEventListener('play',  () => { keyIcon.setAttribute('d', PAUSE); key.setAttribute('aria-label', 'Pause'); });
+audio.addEventListener('pause', () => { keyIcon.setAttribute('d', PLAY);  key.setAttribute('aria-label', 'Play'); });
+
+function paint(frac) {
+  arcLive.style.strokeDashoffset = ARC_LEN * (1 - frac);
+  const p = arcBed.getPointAtLength(ARC_LEN * frac);
+  arcHead.setAttribute('cx', p.x); arcHead.setAttribute('cy', p.y);
+  arcHalo.setAttribute('cx', p.x); arcHalo.setAttribute('cy', p.y);
+  arcwrap.setAttribute('aria-valuenow', Math.round(frac * 100));
+}
+
+audio.addEventListener('timeupdate', () => {
+  const t = TRACKS[idx]; if (!t) return;
+  if (audio.currentTime >= t.end - 0.05) {
+    const nx = TRACKS[idx + 1];
+    if (nx && nx.src === t.src && Math.abs(nx.start - t.end) < 1) return select(idx + 1, !audio.paused);
+    if (audio.currentTime >= t.end) audio.pause();
+  }
+  const span = t.end - t.start;
+  const pos = Math.min(Math.max(audio.currentTime - t.start, 0), span);
+  paint(pos / span);
+  tcCur.textContent = fmt(pos);
+});
+
+/* Seeking: the arc is the readout, the gesture is horizontal — arcs are
+   miserable to drag along, so x-position maps to progress. */
+function seekFromX(clientX) {
+  const t = TRACKS[idx]; if (!t) return;
+  const r = arcwrap.getBoundingClientRect();
+  // A zero-width rect (element hidden, or laid out in a collapsed viewport)
+  // would divide by zero and drive currentTime to NaN.
+  if (!(r.width > 0)) return;
+  const frac = Math.min(Math.max((clientX - r.left) / r.width, 0), 1);
+  const span = t.end - t.start;
+  paint(frac); tcCur.textContent = fmt(frac * span);
+  if (audio.src) { try { audio.currentTime = t.start + frac * span; } catch (e) {} }
+}
+let dragging = false;
+arcwrap.addEventListener('pointerdown', (e) => {
+  dragging = true; arcwrap.setPointerCapture(e.pointerId); seekFromX(e.clientX); e.preventDefault();
+});
+arcwrap.addEventListener('pointermove', (e) => { if (dragging) seekFromX(e.clientX); });
+arcwrap.addEventListener('pointerup',   () => { dragging = false; });
+arcwrap.addEventListener('pointercancel',() => { dragging = false; });
+arcwrap.addEventListener('keydown', (e) => {
+  const t = TRACKS[idx]; if (!t || !audio.src) return;
+  const span = t.end - t.start;
+  const cur = Math.min(Math.max(audio.currentTime - t.start, 0), span);
+  let next = null;
+  if (e.key === 'ArrowRight') next = cur + 5;
+  else if (e.key === 'ArrowLeft') next = cur - 5;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End') next = span - 0.5;
+  else if (e.key === ' ' || e.key === 'Enter') { key.click(); e.preventDefault(); return; }
+  if (next === null) return;
+  next = Math.min(Math.max(next, 0), span);
+  try { audio.currentTime = t.start + next; } catch (err) {}
+  paint(next / span); tcCur.textContent = fmt(next);
+  e.preventDefault();
+});
+
+select(0, false);
+</script>
+
+</body>
+</html>
