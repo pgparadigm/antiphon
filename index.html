@@ -91,6 +91,20 @@
   }
   .standfirst b { color: var(--ivory); font-weight: 400; }
 
+  /* ── The Method: the mechanism, legible before the player ── */
+  .how { margin: 0 0 2.5rem; text-align: center; }
+  .pipeline {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: .3rem .55rem; margin: 0 0 .95rem;
+    font-size: .62rem; color: var(--gold);
+  }
+  .pipeline .sep { color: var(--gold-dim); }
+  .how p {
+    font-size: .87rem; color: var(--steel);
+    max-width: 30rem; margin: 0 auto;
+  }
+  .how p b { color: var(--ivory); font-weight: 400; }
+
   /* ── Instrument ─────────────────────────────────────── */
   .instrument {
     background: var(--panel);
@@ -273,6 +287,22 @@
       Every speaker was found in the text and assigned a voice with no human hand.
     </p>
   </header>
+
+  <section class="how" aria-label="How this was made">
+    <div class="pipeline inscribe mono" aria-hidden="true">
+      <span>Text</span><span class="sep">&#8594;</span>
+      <span>Chapters</span><span class="sep">&#8594;</span>
+      <span>Speakers</span><span class="sep">&#8594;</span>
+      <span>Voices</span><span class="sep">&#8594;</span>
+      <span>Audiobook</span>
+    </div>
+    <p>
+      The machine read the novel, proved <b>who speaks each line</b> from the text
+      itself, and cast every character to a voice of its own.
+      <b>Choose a passage below and press play</b>; the catalogue beneath shows
+      each voice unsealing as it enters the scene.
+    </p>
+  </section>
 
   <div class="instrument">
     <div class="readout">
