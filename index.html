@@ -198,6 +198,47 @@
   }
   blockquote span { display: block; font-style: normal; font-size: .76rem; color: var(--dim); margin-top: .3rem; }
 
+  /* ── The Door ───────────────────────────────────────────
+     The front cover. The archive does not render until the key
+     is presented; a wrong key is met by the seal, not by an
+     error. Nothing on this panel is ever red. */
+  #door {
+    position: fixed; inset: 0; z-index: 2;
+    display: grid; place-items: center;
+    padding: 1.15rem;
+  }
+  .door-panel { text-align: center; max-width: 22rem; width: 100%; }
+  .door-panel .sigil { margin-bottom: 1.2rem; }
+  .door-sub { font-size: .6rem; letter-spacing: .3em; color: var(--gold-dim); margin-bottom: .5rem; }
+  .door-title {
+    font-size: clamp(1.2rem, 4.8vw, 1.6rem); font-weight: 400;
+    color: var(--gold); margin: 0 0 2.2rem;
+  }
+  .door-form {
+    display: flex; border: 1px solid var(--gold-dim); background: var(--panel);
+    transition: border-color .15s ease;
+  }
+  .door-form:focus-within { border-color: var(--gold); }
+  #doorKey {
+    flex: 1; min-width: 0; background: transparent; border: 0; outline: 0;
+    color: var(--ivory); font-size: .85rem; letter-spacing: .08em;
+    padding: .85rem .9rem; text-align: center;
+  }
+  #doorKey::placeholder {
+    color: var(--dim); font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
+  }
+  .door-unseal {
+    background: transparent; border: 0; border-left: 1px solid var(--gold-dim);
+    color: var(--gold); cursor: pointer; padding: 0 1.1rem; font-size: .6rem;
+    transition: background .15s ease;
+  }
+  .door-unseal:hover { background: var(--lapis); }
+  .door-unseal:focus-visible { outline: 1px solid var(--gold); outline-offset: 2px; }
+  .door-word {
+    font-size: .6rem; letter-spacing: .3em; color: var(--steel);
+    min-height: 1.4em; margin-top: 1.2rem;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
   }
@@ -205,7 +246,22 @@
 
 <canvas id="sky" aria-hidden="true"></canvas>
 
-<main>
+<div id="door" role="dialog" aria-label="Sealed archive">
+  <div class="door-panel">
+    <div class="sigil" aria-hidden="true"></div>
+    <div class="door-sub inscribe">Antiphon · Restricted Archive</div>
+    <div class="door-title inscribe">The Burning Index</div>
+    <form class="door-form" id="doorForm">
+      <input id="doorKey" class="mono" type="password" autocomplete="off"
+             autocapitalize="none" spellcheck="false"
+             placeholder="Present the key" aria-label="Access key">
+      <button class="door-unseal inscribe" type="submit">Unseal</button>
+    </form>
+    <div class="door-word inscribe" id="doorWord" aria-live="polite"></div>
+  </div>
+</div>
+
+<main hidden>
   <header>
     <div class="sigil" aria-hidden="true"></div>
     <div class="eyebrow inscribe">Antiphon · Index of Voices</div>
@@ -288,6 +344,45 @@
 </main>
 
 <audio id="audio" preload="metadata"></audio>
+
+<script>
+'use strict';
+/* ── The Door: the key is never stored here — only its SHA-256.
+   A correct key is remembered per device; blocked storage just
+   means the key is asked for again next visit. */
+(function () {
+  const KEY_HASH = '5297bb6dce658db9b9a7322e547d0a84a188b8df99c1f7e24295cc051951ed1a';
+  const STORE = 'burning-index-seal';
+  const door = document.getElementById('door');
+  const main = document.querySelector('main');
+  const form = document.getElementById('doorForm');
+  const input = document.getElementById('doorKey');
+  const word = document.getElementById('doorWord');
+  function unseal() { door.remove(); main.hidden = false; }
+  try { if (localStorage.getItem(STORE) === KEY_HASH) { unseal(); return; } } catch (e) {}
+  async function digest(s) {
+    const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(d)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const k = input.value.trim();
+    if (!k) return;
+    if (!(window.crypto && crypto.subtle)) {
+      word.textContent = 'The seal answers only a secure door.';
+      return;
+    }
+    if (await digest(k) === KEY_HASH) {
+      try { localStorage.setItem(STORE, KEY_HASH); } catch (e2) {}
+      unseal();
+    } else {
+      word.textContent = 'The seal holds.';
+      input.value = '';
+      input.focus();
+    }
+  });
+})();
+</script>
 
 <script>
 'use strict';
