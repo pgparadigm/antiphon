@@ -65,7 +65,7 @@
   }
 
   /* ── Header ─────────────────────────────────────────── */
-  header { padding: 3.5rem 0 2.25rem; text-align: center; }
+  header { padding: 3.5rem 0 2.25rem; text-align: center; position: relative; }
   .sigil {
     width: 26px; height: 26px; margin: 0 auto .9rem;
     border: 1px solid var(--gold-dim); transform: rotate(45deg);
@@ -212,6 +212,24 @@
   }
   blockquote span { display: block; font-style: normal; font-size: .76rem; color: var(--dim); margin-top: .3rem; }
 
+  /* ── Threshold voice: Greek epigraph and invocation ── */
+  .epigraph {
+    font-family: Baskerville, "Palatino", Georgia, serif;
+    font-size: 1rem; letter-spacing: .45em; padding-left: .45em;
+    color: var(--gold); margin: 0 0 .4rem;
+  }
+  .door-gloss {
+    font-family: Baskerville, "Palatino", Georgia, serif;
+    font-style: italic; font-size: .84rem; color: var(--steel);
+    margin: 0 0 2.1rem;
+  }
+  .engine-top {
+    position: absolute; top: 1.2rem; right: 0;
+    font-size: .55rem; letter-spacing: .22em;
+    color: var(--gold-dim); text-decoration: none;
+  }
+  .engine-top:hover { color: var(--gold); }
+
   /* ── The Door ───────────────────────────────────────────
      The front cover. The archive does not render until the key
      is presented; a wrong key is met by the seal, not by an
@@ -276,8 +294,9 @@
 <div id="door" role="dialog" aria-label="Sealed archive">
   <div class="door-panel">
     <div class="sigil" aria-hidden="true"></div>
-    <div class="door-sub inscribe">Antiphon · Restricted Archive</div>
+    <div class="epigraph" aria-hidden="true">ΑΝΤΙΦΩΝΟΝ</div>
     <div class="door-title inscribe">The Burning Index</div>
+    <div class="door-gloss">A restricted archive. The text is asked to sing.</div>
     <form class="door-form" id="doorForm">
       <input id="doorKey" class="mono" type="password" autocomplete="off"
              autocapitalize="none" spellcheck="false"
@@ -290,6 +309,7 @@
 
 <main hidden>
   <header>
+    <a class="engine-top inscribe" href="https://ray-macbook-pro.tail75ab9d.ts.net/">The Engine &#8594;</a>
     <div class="sigil" aria-hidden="true"></div>
     <div class="eyebrow inscribe">Antiphon · Index of Voices</div>
     <h1 class="inscribe">Pride and Prejudice</h1>
