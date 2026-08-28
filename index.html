@@ -253,6 +253,19 @@
     min-height: 1.4em; margin-top: 1.2rem;
   }
 
+  /* ── The Engine: owner's door. Rendered only when the engine
+     actually answers — which only happens on the owner's devices. */
+  #engine { margin-bottom: 2.75rem; }
+  #engine a {
+    display: block; text-decoration: none;
+    background: var(--panel); border: 1px solid var(--gold-dim);
+    padding: 1rem 1.15rem; color: var(--gold);
+    transition: background .15s ease, border-color .15s ease;
+  }
+  #engine a:hover { background: var(--lapis); border-color: var(--gold); }
+  #engine .e-line { font-size: .68rem; }
+  #engine .e-note { font-size: .62rem; color: var(--dim); margin-top: .3rem; display: block; }
+
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
   }
@@ -370,6 +383,14 @@
       <dt>Cast</dt><dd>12 characters and a narrator</dd>
       <dt>Extent</dt><dd class="mono">12:27:00 · 3,486 segments</dd>
     </dl>
+  </section>
+
+  <section id="engine" hidden>
+    <div class="sec-head"><h2 class="inscribe">The Engine</h2></div>
+    <a id="engineLink" href="#">
+      <span class="e-line inscribe">Enter the engine &#8594; import a book, cast the voices, generate</span>
+      <span class="e-note">This door answers only inside the owner's house.</span>
+    </a>
   </section>
 </main>
 
@@ -643,6 +664,24 @@ arcwrap.addEventListener('keydown', (e) => {
 });
 
 select(0, false);
+
+/* ── Owner's door: show it only if the engine answers. A no-cors ping
+   succeeds only on a device that can actually reach the console. */
+(function engineDoor() {
+  const CANDIDATES = ['http://127.0.0.1:8817/', 'https://ray-macbook-pro.tail75ab9d.ts.net/'];
+  const sec = document.getElementById('engine');
+  const link = document.getElementById('engineLink');
+  CANDIDATES.forEach((url) => {
+    const ctl = new AbortController();
+    setTimeout(() => ctl.abort(), 3000);
+    fetch(url, { mode: 'no-cors', signal: ctl.signal }).then(() => {
+      if (sec.hidden || url.startsWith('http://127.')) {
+        link.href = url;
+        sec.hidden = false;
+      }
+    }).catch(() => {});
+  });
+})();
 </script>
 
 </body>
