@@ -385,11 +385,11 @@
     </dl>
   </section>
 
-  <section id="engine" hidden>
+  <section id="engine">
     <div class="sec-head"><h2 class="inscribe">The Engine</h2></div>
-    <a id="engineLink" href="#">
+    <a id="engineLink" href="https://ray-macbook-pro.tail75ab9d.ts.net/">
       <span class="e-line inscribe">Enter the engine &#8594; import a book, cast the voices, generate</span>
-      <span class="e-note">This door answers only inside the owner's house.</span>
+      <span class="e-note">On the Mac itself: http://127.0.0.1:8817 &middot; This door answers only inside the owner's house.</span>
     </a>
   </section>
 </main>
@@ -665,23 +665,6 @@ arcwrap.addEventListener('keydown', (e) => {
 
 select(0, false);
 
-/* ── Owner's door: show it only if the engine answers. A no-cors ping
-   succeeds only on a device that can actually reach the console. */
-(function engineDoor() {
-  const CANDIDATES = ['http://127.0.0.1:8817/', 'https://ray-macbook-pro.tail75ab9d.ts.net/'];
-  const sec = document.getElementById('engine');
-  const link = document.getElementById('engineLink');
-  CANDIDATES.forEach((url) => {
-    const ctl = new AbortController();
-    setTimeout(() => ctl.abort(), 3000);
-    fetch(url, { mode: 'no-cors', signal: ctl.signal }).then(() => {
-      if (sec.hidden || url.startsWith('http://127.')) {
-        link.href = url;
-        sec.hidden = false;
-      }
-    }).catch(() => {});
-  });
-})();
 </script>
 
 </body>
