@@ -289,6 +289,7 @@
     transition: background .15s ease, border-color .15s ease;
   }
   #enginePin:hover { background: var(--lapis); border-color: var(--gold); }
+  .asleep { color: var(--dim); border-color: var(--sealed); cursor: default; pointer-events: none; }
   #enginePin[hidden] { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -416,7 +417,7 @@
     <div class="sec-head"><h2 class="inscribe">The Engine</h2></div>
     <a id="engineLink" href="https://ray-macbook-pro.tail75ab9d.ts.net/">
       <span class="e-line inscribe">Enter the engine &#8594; import a book, cast the voices, generate</span>
-      <span class="e-note">On the Mac itself: http://127.0.0.1:8817 &middot; This door answers only inside the owner's house.</span>
+      <span class="e-note">A public door. It asks for the engine's own access key.</span>
     </a>
   </section>
 
@@ -694,19 +695,37 @@ arcwrap.addEventListener('keydown', (e) => {
 
 select(0, false);
 
-/* ── Owner's pin: this device is marked once by visiting with ?engine.
-   Guests never carry the mark, so the control does not exist for them. */
-(function ownerPin() {
-  const MARK = 'burning-index-engine';
-  let owner = false;
-  try {
-    if (/[?&]engine\b/.test(location.search)) {
-      localStorage.setItem(MARK, '1');
-      history.replaceState(null, '', location.pathname);
-    }
-    owner = localStorage.getItem(MARK) === '1';
-  } catch (e) {}
-  if (owner) document.getElementById('enginePin').hidden = false;
+/* ── The engine door. Its public address changes whenever the tunnel
+   restarts, so the page asks engine.json for the current one rather than
+   carrying a hard-coded URL. No answer, or an unreachable door, means the
+   engine is asleep — say so plainly instead of offering a dead link. */
+(function engineDoor() {
+  const pin = document.getElementById('enginePin');
+  const panel = document.getElementById('engineLink');
+  pin.hidden = false;                       // every keyed visitor sees it
+  const asleep = () => {
+    [pin, panel].forEach(el => {
+      el.removeAttribute('href');
+      el.setAttribute('aria-disabled', 'true');
+      el.classList.add('asleep');
+    });
+    pin.textContent = 'The Engine \u00b7 asleep';
+    panel.querySelector('.e-note').textContent =
+      'The engine is asleep. It answers when the owner\u2019s machine is awake.';
+  };
+  const wake = (url) => {
+    pin.href = url; panel.href = url;
+  };
+  fetch('engine.json?t=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(d => {
+      if (!d || !d.url) return Promise.reject();
+      const ctl = new AbortController();
+      setTimeout(() => ctl.abort(), 6000);
+      return fetch(d.url, { mode: 'no-cors', signal: ctl.signal })
+        .then(() => wake(d.url));
+    })
+    .catch(asleep);
 })();
 
 </script>
