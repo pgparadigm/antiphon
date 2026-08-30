@@ -223,12 +223,6 @@
     font-style: italic; font-size: .84rem; color: var(--steel);
     margin: 0 0 2.1rem;
   }
-  .engine-top {
-    position: absolute; top: 1.2rem; right: 0;
-    font-size: .55rem; letter-spacing: .22em;
-    color: var(--gold-dim); text-decoration: none;
-  }
-  .engine-top:hover { color: var(--gold); }
 
   /* ── The Door ───────────────────────────────────────────
      The front cover. The archive does not render until the key
@@ -273,7 +267,7 @@
 
   /* ── The Engine: owner's door. Rendered only when the engine
      actually answers — which only happens on the owner's devices. */
-  #engine { margin-bottom: 2.75rem; }
+  #engine { margin: 0 0 2.5rem; }
   #engine a {
     display: block; text-decoration: none;
     background: var(--panel); border: 1px solid var(--gold-dim);
@@ -309,7 +303,6 @@
 
 <main hidden>
   <header>
-    <a class="engine-top inscribe" href="https://ray-macbook-pro.tail75ab9d.ts.net/">The Engine &#8594;</a>
     <div class="sigil" aria-hidden="true"></div>
     <div class="eyebrow inscribe">Antiphon · Index of Voices</div>
     <h1 class="inscribe">Pride and Prejudice</h1>
@@ -320,6 +313,14 @@
       Every speaker was found in the text and assigned a voice with no human hand.
     </p>
   </header>
+
+  <section id="engine">
+    <div class="sec-head"><h2 class="inscribe">The Engine</h2></div>
+    <a id="engineLink" href="https://ray-macbook-pro.tail75ab9d.ts.net/">
+      <span class="e-line inscribe">Enter the engine &#8594; import a book, cast the voices, generate</span>
+      <span class="e-note">On the Mac itself: http://127.0.0.1:8817 &middot; This door answers only inside the owner's house.</span>
+    </a>
+  </section>
 
   <section class="how" aria-label="How this was made">
     <div class="pipeline inscribe mono" aria-hidden="true">
@@ -405,13 +406,6 @@
     </dl>
   </section>
 
-  <section id="engine">
-    <div class="sec-head"><h2 class="inscribe">The Engine</h2></div>
-    <a id="engineLink" href="https://ray-macbook-pro.tail75ab9d.ts.net/">
-      <span class="e-line inscribe">Enter the engine &#8594; import a book, cast the voices, generate</span>
-      <span class="e-note">On the Mac itself: http://127.0.0.1:8817 &middot; This door answers only inside the owner's house.</span>
-    </a>
-  </section>
 </main>
 
 <audio id="audio" preload="metadata"></audio>
