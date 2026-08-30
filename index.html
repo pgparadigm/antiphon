@@ -278,6 +278,19 @@
   #engine .e-line { font-size: .68rem; }
   #engine .e-note { font-size: .62rem; color: var(--dim); margin-top: .3rem; display: block; }
 
+  /* ── Owner's pin: rendered only on devices marked as the owner's.
+     Fixed, so the engine is one tap from anywhere without taking any
+     place in the guest's reading order. */
+  #enginePin {
+    position: fixed; right: 1rem; bottom: 1rem; z-index: 3;
+    display: grid; place-items: center; min-height: 2.75rem; padding: 0 1rem;
+    background: var(--panel); border: 1px solid var(--gold-dim);
+    color: var(--gold); text-decoration: none; font-size: .58rem;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  #enginePin:hover { background: var(--lapis); border-color: var(--gold); }
+  #enginePin[hidden] { display: none; }
+
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
   }
@@ -314,13 +327,6 @@
     </p>
   </header>
 
-  <section id="engine">
-    <div class="sec-head"><h2 class="inscribe">The Engine</h2></div>
-    <a id="engineLink" href="https://ray-macbook-pro.tail75ab9d.ts.net/">
-      <span class="e-line inscribe">Enter the engine &#8594; import a book, cast the voices, generate</span>
-      <span class="e-note">On the Mac itself: http://127.0.0.1:8817 &middot; This door answers only inside the owner's house.</span>
-    </a>
-  </section>
 
   <section class="how" aria-label="How this was made">
     <div class="pipeline inscribe mono" aria-hidden="true">
@@ -406,6 +412,15 @@
     </dl>
   </section>
 
+  <section id="engine">
+    <div class="sec-head"><h2 class="inscribe">The Engine</h2></div>
+    <a id="engineLink" href="https://ray-macbook-pro.tail75ab9d.ts.net/">
+      <span class="e-line inscribe">Enter the engine &#8594; import a book, cast the voices, generate</span>
+      <span class="e-note">On the Mac itself: http://127.0.0.1:8817 &middot; This door answers only inside the owner's house.</span>
+    </a>
+  </section>
+
+  <a id="enginePin" class="inscribe" href="https://ray-macbook-pro.tail75ab9d.ts.net/" hidden>The Engine &#8594;</a>
 </main>
 
 <audio id="audio" preload="metadata"></audio>
@@ -678,6 +693,21 @@ arcwrap.addEventListener('keydown', (e) => {
 });
 
 select(0, false);
+
+/* ── Owner's pin: this device is marked once by visiting with ?engine.
+   Guests never carry the mark, so the control does not exist for them. */
+(function ownerPin() {
+  const MARK = 'burning-index-engine';
+  let owner = false;
+  try {
+    if (/[?&]engine\b/.test(location.search)) {
+      localStorage.setItem(MARK, '1');
+      history.replaceState(null, '', location.pathname);
+    }
+    owner = localStorage.getItem(MARK) === '1';
+  } catch (e) {}
+  if (owner) document.getElementById('enginePin').hidden = false;
+})();
 
 </script>
 
