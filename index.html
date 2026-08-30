@@ -720,10 +720,14 @@ select(0, false);
     .then(r => r.ok ? r.json() : Promise.reject())
     .then(d => {
       if (!d || !d.url) return Promise.reject();
+      // Ask the engine's beacon, in cors mode on purpose: a dead tunnel
+      // gets Cloudflare's error page, which carries no CORS header, so the
+      // browser rejects it and we fall through to asleep. A no-cors probe
+      // cannot tell the two apart — Cloudflare's 530 resolves happily.
       const ctl = new AbortController();
       setTimeout(() => ctl.abort(), 6000);
-      return fetch(d.url, { mode: 'no-cors', signal: ctl.signal })
-        .then(() => wake(d.url));
+      return fetch(d.url + '/alive', { mode: 'cors', signal: ctl.signal })
+        .then(r => r.ok ? wake(d.url) : Promise.reject());
     })
     .catch(asleep);
 })();
